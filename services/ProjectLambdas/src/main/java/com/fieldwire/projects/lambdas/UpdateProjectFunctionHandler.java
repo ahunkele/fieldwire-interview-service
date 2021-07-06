@@ -1,9 +1,9 @@
-package com.fieldwire.projects;
+package com.fieldwire.projects.lambdas;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
-public class GetProjectFunctionHandler implements RequestHandler<Object, String> {
+public class UpdateProjectFunctionHandler implements RequestHandler<Object, String> {
 
     @Override
     public String handleRequest(Object input, Context context) {

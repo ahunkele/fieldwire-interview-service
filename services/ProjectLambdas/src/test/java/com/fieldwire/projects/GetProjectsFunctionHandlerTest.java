@@ -7,13 +7,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.amazonaws.services.lambda.runtime.Context;
+import com.fieldwire.projects.models.Project;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
 public class GetProjectsFunctionHandlerTest {
 
-    private static Object input;
+    private static Project input;
 
     @BeforeClass
     public static void createInput() throws IOException {
@@ -21,6 +22,7 @@ public class GetProjectsFunctionHandlerTest {
         input = null;
     }
 
+    /*
     private Context createContext() {
         TestContext ctx = new TestContext();
 
@@ -40,4 +42,5 @@ public class GetProjectsFunctionHandlerTest {
         // TODO: validate output here if needed.
         Assert.assertEquals("Hello from Lambda!", output);
     }
+    */
 }

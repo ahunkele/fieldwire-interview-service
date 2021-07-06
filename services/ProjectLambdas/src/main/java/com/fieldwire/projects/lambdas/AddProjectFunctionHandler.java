@@ -1,4 +1,4 @@
-package com.fieldwire.projects;
+package com.fieldwire.projects.lambdas;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;

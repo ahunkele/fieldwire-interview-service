@@ -12,7 +12,7 @@ import com.amazonaws.services.lambda.runtime.Context;
  * A simple test harness for locally invoking your Lambda function handler.
  */
 public class UpdateFloorplanFunctionHandlerTest {
-
+/*
     private static Object input;
 
     @BeforeClass
@@ -40,4 +40,5 @@ public class UpdateFloorplanFunctionHandlerTest {
         // TODO: validate output here if needed.
         Assert.assertEquals("Hello from Lambda!", output);
     }
+    */
 }

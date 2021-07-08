@@ -13,6 +13,7 @@ import com.amazonaws.services.lambda.runtime.Context;
  */
 public class DeleteFloorplanFunctionHandlerTest {
 
+	/*
     private static Object input;
 
     @BeforeClass
@@ -40,4 +41,5 @@ public class DeleteFloorplanFunctionHandlerTest {
         // TODO: validate output here if needed.
         Assert.assertEquals("Hello from Lambda!", output);
     }
+    */
 }

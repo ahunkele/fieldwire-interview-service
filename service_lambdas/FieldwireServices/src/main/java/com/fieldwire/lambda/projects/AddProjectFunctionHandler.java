@@ -34,10 +34,15 @@ public class AddProjectFunctionHandler implements RequestHandler<Project, Gatewa
 	
 	private PutItemOutcome persistData(Project request) {
 		  Table table = dynamoDb.getTable(DYNAMODB_TABLE_NAME);
-		  PutItemOutcome outcome = table.putItem(new PutItemSpec().withItem(
-		    new Item().withString("project_id", request.getId())
-		              .withString("name", request.getName())
-		              .withStringSet("floorplans", request.getFloorplans())));
+		  Item item = new Item().withString("project_id", request.getId())
+	              .withString("name", request.getName());
+	              
+		  if(request.getFloorplans() != null)
+		  {
+			  item.withStringSet("floorplans", request.getFloorplans());
+		  }
+			 
+		  PutItemOutcome outcome = table.putItem(new PutItemSpec().withItem(item));
 		
 		  return outcome;
 	}

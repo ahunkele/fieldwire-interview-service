@@ -36,5 +36,4 @@ public class DeleteProjectFunctionHandler implements RequestHandler<Project, Del
 				   .build();
 		this.dynamoDb = new DynamoDB(client);
 	}
-
 }

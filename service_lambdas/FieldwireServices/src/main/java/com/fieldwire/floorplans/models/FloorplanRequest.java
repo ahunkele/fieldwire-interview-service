@@ -5,14 +5,13 @@ import java.util.UUID;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
-@DynamoDBTable(tableName="Floorplan")
 public class FloorplanRequest implements Serializable {
 
-	private static final long serialVersionUID = -8755556817933177628L;
+	private static final long serialVersionUID = 8755556817933177628L;
 	private String id;
 	private String project_id;
 	private String name;
-	private String originalImageURI;
+	private String originalImage;
 	
 	public FloorplanRequest() {
 		this.id = UUID.randomUUID().toString();
@@ -42,12 +41,14 @@ public class FloorplanRequest implements Serializable {
 		this.name = name;
 	}
 
-	public String getOriginalImageURI() {
-		return originalImageURI;
+	public String getOriginalImage() {
+		return originalImage;
 	}
 
-	public void setOriginalImageURI(String originalImageURI) {
-		this.originalImageURI = originalImageURI;
+	public void setOriginalImage(String originalImage) {
+		this.originalImage = originalImage;
 	}
+
+
 
 }

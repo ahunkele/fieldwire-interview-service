@@ -32,6 +32,11 @@ import com.fieldwire.lambda.projects.GetProjectFunctionHandler;
 import com.fieldwire.lambda.projects.UpdateProjectFunctionHandler;
 import com.fieldwire.projects.models.Project;
 
+/**
+ * Add Floorplan AWS Handler.
+ * @author andyhunkele
+ *
+ */
 public class AddFloorplanFunctionHandler implements RequestHandler<FloorplanRequest, Floorplan> {
 
 	private DynamoDB dynamoDb;

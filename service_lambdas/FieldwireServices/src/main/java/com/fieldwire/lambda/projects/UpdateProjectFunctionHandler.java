@@ -13,6 +13,11 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fieldwire.projects.models.Project;
 
+/**
+ * Update Project AWS lambda.
+ * @author andyhunkele
+ *
+ */
 public class UpdateProjectFunctionHandler implements RequestHandler<Project, UpdateItemResult> {
 
 	private DynamoDB dynamoDb;
@@ -31,6 +36,9 @@ public class UpdateProjectFunctionHandler implements RequestHandler<Project, Upd
         return outcome.getUpdateItemResult();
     }
     
+    /**
+     * init the dynamodb client.
+     */
 	private void initDynamoDbClient() {
 		AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
 				   .withRegion(REGION)

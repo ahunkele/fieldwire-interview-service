@@ -26,6 +26,11 @@ import com.fieldwire.lambda.projects.GetProjectFunctionHandler;
 import com.fieldwire.lambda.projects.UpdateProjectFunctionHandler;
 import com.fieldwire.projects.models.Project;
 
+/**
+ * Delete Floorplan AWS Lambda
+ * @author andyhunkele
+ *
+ */
 public class DeleteFloorplanFunctionHandler implements RequestHandler<Floorplan, DeleteItemResult> {
 	
 	private DynamoDB dynamoDb;

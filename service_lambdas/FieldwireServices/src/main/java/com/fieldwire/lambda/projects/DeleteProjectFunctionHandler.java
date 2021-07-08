@@ -13,6 +13,11 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fieldwire.projects.models.Project;
 
+/**
+ * Delete Project AWS Lambda.
+ * @author andyhunkele
+ *
+ */
 public class DeleteProjectFunctionHandler implements RequestHandler<Project, DeleteItemResult> {
 
 	private DynamoDB dynamoDb;

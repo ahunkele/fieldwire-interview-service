@@ -8,6 +8,11 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fieldwire.projects.models.Project;
 
+/**
+ * Get Project AWS Lambda.
+ * @author andyhunkele
+ *
+ */
 public class GetProjectFunctionHandler implements RequestHandler<Project, Project> {
 
 	private DynamoDBMapper mapper;

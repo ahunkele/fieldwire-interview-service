@@ -15,6 +15,10 @@ import com.fieldwire.floorplans.models.Floorplan;
 import com.fieldwire.floorplans.models.FloorplanRequest;
 import com.fieldwire.projects.models.Project;
 
+/**
+ * Update Floorplan AWS Lambda.
+ * @author andyhunkele
+ */
 public class UpdateFloorplanFunctionHandler implements RequestHandler<FloorplanRequest, UpdateItemResult> {
 
 	private DynamoDB dynamoDb;
@@ -48,6 +52,9 @@ public class UpdateFloorplanFunctionHandler implements RequestHandler<FloorplanR
         return outcome.getUpdateItemResult();
     }
     
+    /**
+     * Init the dynamo db client.
+     */
 	private void initDynamoDbClient() {
 		AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
 				   .withRegion(REGION)

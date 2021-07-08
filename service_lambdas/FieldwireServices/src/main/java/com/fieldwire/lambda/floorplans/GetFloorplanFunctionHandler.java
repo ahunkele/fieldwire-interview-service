@@ -9,6 +9,11 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fieldwire.floorplans.models.Floorplan;
 import com.fieldwire.floorplans.models.FloorplanRequest;
 
+/**
+ * Get Floorplan AWS Handler.
+ * @author andyhunkele
+ *
+ */
 public class GetFloorplanFunctionHandler implements RequestHandler<FloorplanRequest, Floorplan> {
 
 	private DynamoDBMapper mapper;

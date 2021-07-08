@@ -13,6 +13,11 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fieldwire.projects.models.Project;
 
+/**
+ * Add Project AWS Lambda.
+ * @author andyhunkele
+ *
+ */
 public class AddProjectFunctionHandler implements RequestHandler<Project, GatewayResponse> {
 
 	private DynamoDB dynamoDb;

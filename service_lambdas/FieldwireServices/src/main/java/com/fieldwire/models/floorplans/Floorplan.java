@@ -1,4 +1,4 @@
-package com.fieldwire.floorplans.models;
+package com.fieldwire.models.floorplans;
 
 import java.io.Serializable;
 import java.util.UUID;

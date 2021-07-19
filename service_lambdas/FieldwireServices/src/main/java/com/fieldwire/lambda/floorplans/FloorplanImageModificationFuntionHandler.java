@@ -20,8 +20,8 @@ import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
-import com.fieldwire.floorplans.models.Floorplan;
-import com.fieldwire.floorplans.models.FloorplanRequest;
+import com.fieldwire.models.floorplans.Floorplan;
+import com.fieldwire.models.floorplans.FloorplanRequest;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 public class FloorplanImageModificationFuntionHandler implements RequestHandler<DynamodbEvent, String> {

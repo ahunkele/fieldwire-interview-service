@@ -11,7 +11,7 @@ import com.amazonaws.services.dynamodbv2.document.spec.UpdateItemSpec;
 import com.amazonaws.services.dynamodbv2.model.UpdateItemResult;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.fieldwire.projects.models.Project;
+import com.fieldwire.models.projects.Project;
 
 /**
  * Update Project AWS lambda.

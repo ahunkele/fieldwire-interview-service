@@ -13,7 +13,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fieldwire.floorplans.models.Floorplan;
 import com.fieldwire.floorplans.models.FloorplanRequest;
-import com.fieldwire.projects.models.Project;
+import com.fieldwire.models.projects.Project;
 
 /**
  * Update Floorplan AWS Lambda.

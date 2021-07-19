@@ -1,4 +1,4 @@
-package com.fieldwire.projects.models;
+package com.fieldwire.models.projects;
 
 import java.io.Serializable;
 import java.util.List;

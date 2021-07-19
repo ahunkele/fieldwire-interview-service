@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.ws.rs.BadRequestException;
 
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
@@ -26,11 +27,11 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.fieldwire.floorplans.models.Floorplan;
-import com.fieldwire.floorplans.models.FloorplanRequest;
+import com.fieldwire.models.floorplans.Floorplan;
+import com.fieldwire.models.floorplans.FloorplanRequest;
 import com.fieldwire.lambda.projects.GetProjectFunctionHandler;
 import com.fieldwire.lambda.projects.UpdateProjectFunctionHandler;
-import com.fieldwire.projects.models.Project;
+import com.fieldwire.models.projects.Project;
 
 /**
  * Add Floorplan AWS Handler.
@@ -41,38 +42,35 @@ public class AddFloorplanFunctionHandler implements RequestHandler<FloorplanRequ
 
 	private DynamoDB dynamoDb;
 	private AmazonS3 amazonS3;
-	private static final String S3_URL = "s3://";
+	private enum ImageSizes { ORIGINAL, THUMB, LARGE }
+	private static final String S3_URL_PREFIX = "s3://";
 	private static final String DYNAMODB_TABLE_NAME = "Floorplan";
-	private static final String BUCKET_NAME = "original-images-s3";
+	private static final String BUCKET_NAME = "uploaded-images-s3";
 	private static final Regions REGION = Regions.US_EAST_2;
-	private String objKey = "";
 
 	@Override
 	public Floorplan handleRequest(FloorplanRequest request, Context context) {
+		validateRequest(request);	
 		this.initDynamoDbAndS3Client();
-		context.getLogger().log("ID: " + request.getId());
-		context.getLogger().log("PROJECT_ID: " + request.getProject_id());
-		context.getLogger().log("NAME: " + request.getName());
-		context.getLogger().log("PROHO " + request.getOriginalImage());
 
-		objKey = request.getId();
 		InputStream is = new ByteArrayInputStream(Base64.getDecoder().decode(request.getOriginalImage()));
 		ObjectMetadata isMeta = new ObjectMetadata();
-		
-	    //Find out image type
 	    String mimeType = null;
 	    String fileExtension = null;
 	    try {
+			// Determine the image extension type
 	    	isMeta.setContentLength(is.available());
-	        mimeType = URLConnection.guessContentTypeFromStream(is); //mimeType is something like "image/jpeg"
+	        mimeType = URLConnection.guessContentTypeFromStream(is);
 	        String delimiter="[/]";
 	        String[] tokens = mimeType.split(delimiter);
 	        fileExtension = tokens[1];
-	    } catch (IOException ioException){}
+	    } catch (IOException ioException){
+			context.getLogger().log("Input stream failed" + ioException);
+			throw new BadRequestException("The provided image type is not supported");
+		}
 		
-	    objKey += "/original." + fileExtension;
-	    
-		PutObjectRequest putRequest = new PutObjectRequest(BUCKET_NAME, objKey, is, isMeta);
+		PutObjectRequest putRequest =
+			new PutObjectRequest(BUCKET_NAME, getS3Path(request.getId(), ImageSizes.ORIGINAL, fileExtension), is, isMeta);
 		amazonS3.putObject(putRequest);
 		
 		persistData(request, request.getId(), fileExtension);
@@ -80,9 +78,9 @@ public class AddFloorplanFunctionHandler implements RequestHandler<FloorplanRequ
 		floorplanResonse.setId(request.getId());
 		floorplanResonse.setName(request.getName());
 		floorplanResonse.setProject_id(request.getProject_id());
-		floorplanResonse.setOriginal_url(S3_URL + BUCKET_NAME + "/" + request.getId() + "/original." + fileExtension);
-		floorplanResonse.setThumb_url(S3_URL + BUCKET_NAME + "/" +  request.getId() + "/thumb." + fileExtension);
-		floorplanResonse.setLarge_url(S3_URL + BUCKET_NAME + "/" + request.getId() + "/large." + fileExtension);
+		floorplanResonse.setOriginal_url(getS3Path(request.getId(), ImageSizes.ORIGINAL, fileExtension));
+		floorplanResonse.setThumb_url(getS3Path(request.getId(), ImageSizes.THUMBNAIL, fileExtension));
+		floorplanResonse.setLarge_url(getS3Path(request.getId(), ImageSizes.LARGE, fileExtension));
 		
 		Project getProjectRequest = new Project();
 		getProjectRequest.setId(request.getProject_id());
@@ -118,11 +116,25 @@ public class AddFloorplanFunctionHandler implements RequestHandler<FloorplanRequ
 		    new Item().withString("floorplan_id", request.getId())
 		    		  .withString("project_id", request.getProject_id())	
 		              .withString("name", request.getName())
-		              .withString("floorplanImage", floorplanUID + "/original." + fileType)
-		              .withString("floorplanThumbnail", floorplanUID + "/thumbnail." + fileType)
-		              .withString("floorplanLarge", floorplanUID + "/large." + fileType)));
-		
+		              .withString("floorplanImage", getFileName(floorplanUID, ImageSizes.ORIGINAL, fileType))
+		              .withString("floorplanThumbnail", getFileName(floorplanUID, ImageSizes.THUMBNAIL, fileType))
+		              .withString("floorplanLarge", getFileName(floorplanUID, ImageSizes.LARGE, fileType)));
+
 		  return outcome;
+	}
+
+	/**
+	 * returns the s3 path s3://bucket/id/type.ext
+	 */
+	private void getS3Path(String id, String fileExtension, ImageSizes imageSize) {
+		return String.format("%s%s/%s/%s.%s", S3_URL_PREFIX, BUCKET_NAME, id, imageSize.name().toLowerCase(), fileExtension);
+	}
+
+	/**
+	 * returns the path/name of the image file
+	 */
+	private void getFileName(String floorplanUID, String fileExtension, ImageSizes imageSize) {
+		return String.format("%s/%s.%s", floorplanUID, imageSize.name().toLowerCase(), fileExtension);
 	}
 	
 	/**
@@ -139,4 +151,11 @@ public class AddFloorplanFunctionHandler implements RequestHandler<FloorplanRequ
 		this.dynamoDb = new DynamoDB(client);
 	}
 
+	private void validateRequest(FloorplanRequest request) {
+		if (request.getId() == null || String.isEmpty(request.getId())
+			|| request.getName() == null || String.isEmpty(reuqest.getName())
+			|| request.getProject_id() == null || String.isEmpty(request.getProject_id())) {
+				throw new BadRequestException("Request parameters must be present to add a floorplan");
+			}
+	}
 }

@@ -20,11 +20,11 @@ import com.amazonaws.services.s3.model.ListObjectsV2Request;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
-import com.fieldwire.floorplans.models.Floorplan;
+import com.fieldwire.models.floorplans.Floorplan;
 import com.fieldwire.lambda.projects.DeleteProjectFunctionHandler;
 import com.fieldwire.lambda.projects.GetProjectFunctionHandler;
 import com.fieldwire.lambda.projects.UpdateProjectFunctionHandler;
-import com.fieldwire.projects.models.Project;
+import com.fieldwire.models.projects.Project;
 
 /**
  * Delete Floorplan AWS Lambda
